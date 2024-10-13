@@ -1,49 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define ll long long
-#define fastIO {ios_base::sync_with_stdio(false); cin.tie(NULL);}
+#define fastIO ios_base::sync_with_stdio(false); cin.tie(NULL);
 
-int main(){
+bool isBalanced(const string& s) {
+    stack<char> st;
+    for (char it : s) {
+        if (it == '(' || it == '{' || it == '[') {
+            st.push(it);
+        } else {
+            if (st.empty()) return false;
+            char top = st.top();
+            if ((it == ')' && top == '(') || 
+                (it == '}' && top == '{') || 
+                (it == ']' && top == '[')) {
+                st.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+    return st.empty();
+}
+
+int main() {
     fastIO
-	int t;
+    int t;
     cin >> t;
-    while(t--){
-        int f = 1;
+    while (t--) {
         string s;
         cin >> s;
-        stack <char> st;
-        for(auto it: s)
-            if(st.empty()){
-                if((it == ')') || (it == '}') || (it == ']')){
-                    cout << "NO" << endl;
-                    f = 0;
-                    break;
-                }
-                else
-                    st.push(it);
-            }
-            else
-                if((it == ')') || (it == '}') || (it == ']')){
-                    if((it == ')') && (st.top() == '('))
-                        st.pop();
-                    else if((it == '}') && (st.top() == '{'))
-                        st.pop();
-                    else if((it == ']') && (st.top() == '['))
-                        st.pop();
-                    else{
-                        cout << "NO" << endl;
-                        f = 0;
-                        break;
-                    }
-                }
-                else{
-                    st.push(it);
-                }
-
-            if(st.empty() && (f==1))
-                cout << "YES" << endl;
-            else if(f==1)
-                cout << "NO" << endl;
+        if (isBalanced(s)) {
+            cout << "YES" << endl;
+        } else {
+            cout << "NO" << endl;
+        }
     }
+    return 0;
 }
